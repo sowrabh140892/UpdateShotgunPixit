@@ -14,4 +14,4 @@ echo $ENTITY_ID
 echo $ENTITY_TYPE
 echo $ATTRIBUTE_NAME
 echo $ATTRIBUTE_VALUE
-echo $(python ./shotgun_update/shotgunupdate.py $TYPE $ENTITY_ID $ENTITY_TYPE $ATTRIBUTE_NAME $ATTRIBUTE_VALUE)
+echo $(python ./shotgun_update_status-master/shotgunupdate.py $TYPE $ENTITY_ID $ENTITY_TYPE $ATTRIBUTE_NAME $ATTRIBUTE_VALUE)
