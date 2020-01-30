@@ -1,6 +1,6 @@
 #!/bin/sh
 echo $1
-COPY=$(aws s3 cp s3://$1 /tmp/shotgun.txt)
+COPY=$(aws s3 cp s3://aws-batch-parameter/$1 /tmp/shotgun.txt)
 LINE=$(sed -n 1p /tmp/shotgun.txt)
 echo $LINE
 VAR=( $LINE )
