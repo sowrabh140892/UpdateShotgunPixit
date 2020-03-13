@@ -7,6 +7,7 @@ import re
 import logging
 import sys
 import sentry_sdk
+import shotgun_api3
 from sentry_sdk.integrations.logging import ignore_logger
 sentry_sdk.init(dsn='https://2fee4ed938294813aeeb28f08e3614b8@sentry.io/1858927')
 
@@ -61,6 +62,14 @@ elif len(line)==16:
 
 print(line)
 
+try:
+    SHOTGUN_SCRIPT_NAME=str(os.environ['SHOTGUN_SCRIPT_NAME'])
+    SHOTGUN_SCRIPT_KEY=str(os.environ['SHOTGUN_SCRIPT_KEY'])
+    SHOTGUN_HOST_NAME=str(os.environ['SHOTGUN_HOST_NAME'])	
+except Exception as e:
+    raise ValueError('Error while accessing Shotgun details from environment variables')
+    logger.info('Error while accessing Shotgun details from environment variables')
+
 def send_message_to_sns(topic_arn, message_body, message_attrs):
     """
     :param topic_arn:
@@ -109,7 +118,9 @@ def main():
 		msg_attr['manifest_path'] = {"DataType": "String", "StringValue": PIXIT_MANIFEST_PATH}
 		response = send_message_to_sns(topic_arn=UAP_SNS_TOPIC, message_body=msg_body, message_attrs=msg_attr)
 		print(response)
-    
+		
+    sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
+    sg.create("Reply", {"entity": {"type": SHOTGUN_ENTITY_TYPE, "id": int(SHOTGUN_ENTITY_ID)},"content": "AWS Copy Completed..."})
     
 	
 if __name__ == '__main__':
