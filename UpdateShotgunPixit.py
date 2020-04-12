@@ -14,7 +14,7 @@ sentry_sdk.init(dsn='https://2fee4ed938294813aeeb28f08e3614b8@sentry.io/1858927'
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-UAP_SNS_TOPIC="arn:aws:sns:ap-southeast-2:416748369696:UAPSNS"
+UAP_SNS_TOPIC="arn:aws:sns:us-east-1:398469702425:AASNS"
 
 BUCKET='aws-batch-parameters'
 KEY=str(sys.argv[1])
