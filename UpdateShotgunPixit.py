@@ -77,7 +77,7 @@ def send_message_to_sns(topic_arn, message_body, message_attrs):
     :param message_attrs:
     :return:
     """
-    session = boto3.Session(region_name='ap-southeast-2')
+    session = boto3.Session(region_name='us-east-1')
     sns = session.client('sns')
     response = sns.publish(TopicArn=topic_arn,
                            Message=message_body,
