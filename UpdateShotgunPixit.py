@@ -85,7 +85,7 @@ def send_message_to_sns(topic_arn, message_body, message_attrs):
                            )
     return response
 
-def update_shotgun(entity_type, entity_id, attr_name, attr_value):
+def update_shotgun(entity_id, entity_type, attr_name, attr_value):
 	sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
 	attr_names = attr_name.split('|')
 	attr_values = attr_value.split('|')
