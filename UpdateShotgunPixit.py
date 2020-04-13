@@ -85,6 +85,18 @@ def send_message_to_sns(topic_arn, message_body, message_attrs):
                            )
     return response
 
+def update_shotgun(entity_type, entity_id, attr_name, attr_value):
+	sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
+	attr_names = attr_name.split('|')
+	attr_values = attr_value.split('|')
+	logger.info(str(attr_names))
+	logger.info(str(attr_values))
+	if len(attr_names) == len(attr_values):
+		updates = dict(zip(attr_names, attr_values)) 
+		sg.update(entity_type, entity_id, updates)
+	else:
+		logger.error('parameters invalid')
+
 def main():
     """
     :return:
@@ -93,23 +105,25 @@ def main():
     if len(line)==12:
 		msg_attr={}
 		msg_body = 'Changing Delivery Status to Delivered'
-		msg_attr['Type'] = {"DataType": "String", "StringValue": SHOTGUN_TYPE}
-		msg_attr['entityId'] = {"DataType": "Number", "StringValue": SHOTGUN_ENTITY_ID}
-		msg_attr['entityType'] = {"DataType": "String", "StringValue": SHOTGUN_ENTITY_TYPE}
-		msg_attr['attributeName'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_NAME}
-		msg_attr['attributeValue'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_VALUE}
-		response = send_message_to_sns(topic_arn=UAP_SNS_TOPIC, message_body=msg_body, message_attrs=msg_attr)
-		print(response)
+		update_shotgun(SHOTGUN_ENTITY_ID, SHOTGUN_ENTITY_TYPE, SHOTGUN_ATTRIBUTE_NAME, SHOTGUN_ATTRIBUTE_VALUE)
+		# msg_attr['Type'] = {"DataType": "String", "StringValue": SHOTGUN_TYPE}
+		# msg_attr['entityId'] = {"DataType": "Number", "StringValue": SHOTGUN_ENTITY_ID}
+		# msg_attr['entityType'] = {"DataType": "String", "StringValue": SHOTGUN_ENTITY_TYPE}
+		# msg_attr['attributeName'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_NAME}
+		# msg_attr['attributeValue'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_VALUE}
+		# response = send_message_to_sns(topic_arn=UAP_SNS_TOPIC, message_body=msg_body, message_attrs=msg_attr)
+		# print(response)
     elif len(line)==16:
 		msg_attr={}
 		msg_body = 'Changing Delivery Status to Delivered'
-		msg_attr['Type'] = {"DataType": "String", "StringValue": SHOTGUN_TYPE}
-		msg_attr['entityId'] = {"DataType": "Number", "StringValue": SHOTGUN_ENTITY_ID}
-		msg_attr['entityType'] = {"DataType": "String", "StringValue": SHOTGUN_ENTITY_TYPE}
-		msg_attr['attributeName'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_NAME}
-		msg_attr['attributeValue'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_VALUE}
-		response = send_message_to_sns(topic_arn=UAP_SNS_TOPIC, message_body=msg_body, message_attrs=msg_attr)
-		print(response)
+		update_shotgun(SHOTGUN_ENTITY_ID, SHOTGUN_ENTITY_TYPE, SHOTGUN_ATTRIBUTE_NAME, SHOTGUN_ATTRIBUTE_VALUE)
+		# msg_attr['Type'] = {"DataType": "String", "StringValue": SHOTGUN_TYPE}
+		# msg_attr['entityId'] = {"DataType": "Number", "StringValue": SHOTGUN_ENTITY_ID}
+		# msg_attr['entityType'] = {"DataType": "String", "StringValue": SHOTGUN_ENTITY_TYPE}
+		# msg_attr['attributeName'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_NAME}
+		# msg_attr['attributeValue'] = {"DataType": "String", "StringValue": SHOTGUN_ATTRIBUTE_VALUE}
+		# response = send_message_to_sns(topic_arn=UAP_SNS_TOPIC, message_body=msg_body, message_attrs=msg_attr)
+		# print(response)
 		msg_attr={}
 		msg_body = 'Changing Delivery Status to Delivered'
 		msg_attr['ProjectType'] = {"DataType": "String", "StringValue": PIXIT_PROJECT_TYPE}
