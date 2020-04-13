@@ -93,7 +93,7 @@ def update_shotgun(entity_id, entity_type, attr_name, attr_value):
 	logger.info(str(attr_values))
 	if len(attr_names) == len(attr_values):
 		updates = dict(zip(attr_names, attr_values)) 
-		sg.update(entity_type, entity_id, updates)
+		sg.update(entity_type, int(entity_id), updates)
 	else:
 		logger.error('parameters invalid')
 
