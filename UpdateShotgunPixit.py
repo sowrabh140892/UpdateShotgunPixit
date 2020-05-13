@@ -9,6 +9,9 @@ import sys
 import sentry_sdk
 import shotgun_api3
 from sentry_sdk.integrations.logging import ignore_logger
+import decimal
+from boto3.dynamodb.conditions import Key, Attr
+from __future__ import print_function 
 sentry_sdk.init(dsn='https://2fee4ed938294813aeeb28f08e3614b8@sentry.io/1858927')
 
 logger = logging.getLogger()
@@ -22,6 +25,10 @@ session = boto3.Session()
 #print dir(session)
 
 count=0
+
+
+
+
 
 try:
     s3 = boto3.resource('s3')
@@ -58,6 +65,27 @@ elif len(line)==16:
 	PIXIT_DELIVERY_ID=str(line[14])
 	print(PIXIT_DELIVERY_ID)
 	PIXIT_MANIFEST_PATH=str(line[15])
+
+
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+
+table = dynamodb.Table('CopyProcess-Log')
+
+response = table.query(
+    KeyConditionExpression=Key('ProcessID').eq(SHOTGUN_ENTITY_ID)
+)
+
+print("GetItem succeeded:")
+
+f = open('/tmp/'+SHOTGUN_ENTITY_ID+'.txt', 'w')
+
+for i in response['Items']:
+    f.write(str(i['ProcessNumber'])+"---"+i['Status']+"\n")
+
+f.close
+
+sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
+sg.upload(SHOTGUN_ENTITY_TYPE, SHOTGUN_ENTITY_ID, '/tmp/'+SHOTGUN_ENTITY_ID+'.txt')
 
 
 print(line)
