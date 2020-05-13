@@ -71,11 +71,6 @@ for i in response['Items']:
     f.write(str(i['ProcessNumber'])+"---"+i['Status']+"\n")
 
 f.close
-
-sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
-sg.upload(SHOTGUN_ENTITY_TYPE, SHOTGUN_ENTITY_ID, '/tmp/'+SHOTGUN_ENTITY_ID+'.txt')
-
-
 print(line)
 
 try:
@@ -152,6 +147,8 @@ def main():
     sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
     sg.create("Reply", {"entity": {"type": SHOTGUN_ENTITY_TYPE, "id": int(SHOTGUN_ENTITY_ID)},"content": "AWS Copy Completed..."})
     
+    sg = shotgun_api3.Shotgun(SHOTGUN_HOST_NAME, SHOTGUN_SCRIPT_NAME, SHOTGUN_SCRIPT_KEY)
+    sg.upload(SHOTGUN_ENTITY_TYPE, SHOTGUN_ENTITY_ID, '/tmp/'+SHOTGUN_ENTITY_ID+'.txt')
 	
 if __name__ == '__main__':
     main()
