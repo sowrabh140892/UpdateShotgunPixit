@@ -11,7 +11,6 @@ import shotgun_api3
 from sentry_sdk.integrations.logging import ignore_logger
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
-from __future__ import print_function 
 sentry_sdk.init(dsn='https://2fee4ed938294813aeeb28f08e3614b8@sentry.io/1858927')
 
 logger = logging.getLogger()
@@ -26,10 +25,6 @@ session = boto3.Session()
 
 count=0
 
-
-
-
-
 try:
     s3 = boto3.resource('s3')
     s3.Bucket(BUCKET).download_file(KEY, '/tmp/%s'%(KEY))
@@ -39,11 +34,8 @@ except Exception as e:
 finally:
     logger.info('Downloading Template Ended')
 
-
 file=open('/tmp/%s'%(KEY)).read().splitlines()
-
 print(file[count])
-
 line = file[count].split(' ')
 
 if len(line)==12:
@@ -68,13 +60,9 @@ elif len(line)==16:
 
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-
 table = dynamodb.Table('CopyProcess-Log')
 
-response = table.query(
-    KeyConditionExpression=Key('ProcessID').eq(SHOTGUN_ENTITY_ID)
-)
-
+response = table.query(KeyConditionExpression=Key('ProcessID').eq(SHOTGUN_ENTITY_ID))
 print("GetItem succeeded:")
 
 f = open('/tmp/'+SHOTGUN_ENTITY_ID+'.txt', 'w')
