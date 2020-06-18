@@ -24,7 +24,7 @@ def send_message_to_sns(job_data):
 
     sns_session = boto3.Session(region_name=job_data['batch_region'])
     sns = sns_session.client('sns')
-    sns_response = sns.publish(TopicArn=job_data['uap_sns_topic'],
+    sns_response = sns.publish(TopicArn=job_data['sns_topic'],
                                Message=msg_body,
                                MessageAttributes=msg_attr)
     return sns_response
